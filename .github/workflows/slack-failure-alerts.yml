@@ -1,0 +1,100 @@
+name: Slack failure alerts
+
+on:
+  workflow_run:
+    workflows: ['*', '!Slack failure alerts']
+    types: [completed]
+  deployment_status:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  notify:
+    if: >-
+      (github.event_name == 'workflow_run' &&
+       github.event.workflow_run.name != 'Slack failure alerts' &&
+       contains(fromJSON('["failure","timed_out","startup_failure"]'), github.event.workflow_run.conclusion)) ||
+      (github.event_name == 'deployment_status' &&
+       contains(fromJSON('["failure","error"]'), github.event.deployment_status.state)) ||
+      github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Notify ops-warnings
+        env:
+          SLACK_WARNINGS_WEBHOOK: ${{ secrets.SLACK_WARNINGS_WEBHOOK }}
+        shell: python
+        run: |
+          import html
+          import json
+          import os
+          import sys
+          import urllib.request
+          from urllib.parse import urlsplit
+          
+          NAME = 'Slack failure alerts'
+          MENTION = '<@U0CBHATQXT9>'
+          
+          def message(event_name, event):
+              repo = event['repository']['full_name']
+              if repo.split('/')[0].lower() not in {'helixthinker', 'akiramahq'}:
+                  raise ValueError('Unexpected repository owner')
+              if event_name == 'workflow_run':
+                  run = event['workflow_run']
+                  if run.get('name') == NAME or run.get('conclusion') not in {'failure', 'timed_out', 'startup_failure'}:
+                      return None
+                  label = f"CI: {run['name']} — {run['conclusion']} (attempt {run.get('run_attempt', 1)})"
+                  url = run['html_url']
+              elif event_name == 'deployment_status':
+                  status = event['deployment_status']
+                  if status.get('state') not in {'failure', 'error'}:
+                      return None
+                  label = f"Deploy: {event['deployment']['environment']} — {status['state']}"
+                  url = f"https://github.com/{repo}/deployments"
+              elif event_name == 'workflow_dispatch':
+                  label = 'TEST: проверка уведомления об ошибке, реального сбоя нет'
+                  url = f"https://github.com/{repo}/actions"
+              else:
+                  return None
+              parsed = urlsplit(url)
+              if parsed.scheme != 'https' or parsed.netloc != 'github.com' or not parsed.path.startswith('/' + repo + '/'):
+                  raise ValueError('Unexpected GitHub URL')
+              # Repository/event names never become mrkdwn or additional mentions.
+              return {
+                  'text': f'{MENTION} Ошибка GitHub: {html.escape(repo)}. {url}',
+                  'blocks': [
+                      {'type': 'section', 'text': {'type': 'mrkdwn', 'text': f'{MENTION} :rotating_light: Ошибка GitHub'}},
+                      {'type': 'section', 'text': {'type': 'plain_text', 'text': f'{repo}\n{label}'[:2900]}},
+                      {'type': 'section', 'text': {'type': 'mrkdwn', 'text': f'<{url}|Открыть в GitHub>'}},
+                  ],
+                  'unfurl_links': False,
+                  'unfurl_media': False,
+              }
+          
+          def main():
+              with open(os.environ['GITHUB_EVENT_PATH']) as source:
+                  payload = message(os.environ['GITHUB_EVENT_NAME'], json.load(source))
+              if payload is None:
+                  return
+              webhook = os.environ.get('SLACK_WARNINGS_WEBHOOK', '')
+              parts = urlsplit(webhook)
+              if parts.scheme != 'https' or parts.netloc != 'hooks.slack.com' or not parts.path.startswith('/services/') or parts.query or parts.fragment:
+                  raise ValueError('Missing or invalid SLACK_WARNINGS_WEBHOOK secret')
+              request = urllib.request.Request(webhook, data=json.dumps(payload).encode(), headers={'Content-Type': 'application/json'}, method='POST')
+              # Never follow redirects with the webhook credential or include it in errors.
+              class NoRedirect(urllib.request.HTTPRedirectHandler):
+                  def redirect_request(self, *args, **kwargs):
+                      return None
+              try:
+                  with urllib.request.build_opener(NoRedirect).open(request, timeout=20) as response:
+                      if response.read().strip() != b'ok':
+                          raise RuntimeError('Slack did not acknowledge the alert')
+              except Exception:
+                  print('::error::Slack alert delivery failed; check the webhook secret and Slack app.', file=sys.stderr)
+                  return 1
+              print('Slack acknowledged the notification.')
+              return 0
+          
+          if __name__ == '__main__':
+              sys.exit(main())
