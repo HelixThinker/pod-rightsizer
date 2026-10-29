@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	contract "github.com/HelixThinker/pod-rightsizer/pkg/providers/loadtest"
+	contract "github.com/nilx6874/pod-rightsizer/pkg/providers/loadtest"
 )
 
 func TestRunKeepsTypedOutcome(t *testing.T) {

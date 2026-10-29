@@ -38,7 +38,7 @@ jobs:
           
           def message(event_name, event):
               repo = event['repository']['full_name']
-              if repo.split('/')[0].lower() not in {'helixthinker', 'akiramahq'}:
+              if repo.split('/')[0].lower() not in {'nilx6874', 'akiramahq'}:
                   raise ValueError('Unexpected repository owner')
               if event_name == 'workflow_run':
                   run = event['workflow_run']

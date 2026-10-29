@@ -7,8 +7,8 @@ import (
 	"sort"
 	"time"
 
-	"github.com/HelixThinker/pod-rightsizer/pkg/kubernetes"
-	"github.com/HelixThinker/pod-rightsizer/pkg/metrics"
+	"github.com/nilx6874/pod-rightsizer/pkg/kubernetes"
+	"github.com/nilx6874/pod-rightsizer/pkg/metrics"
 )
 
 const (

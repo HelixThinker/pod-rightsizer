@@ -13,9 +13,9 @@ import (
 	"testing"
 	"time"
 
-	corek8s "github.com/HelixThinker/pod-rightsizer/pkg/kubernetes"
-	coreloadtest "github.com/HelixThinker/pod-rightsizer/pkg/loadtest"
-	"github.com/HelixThinker/pod-rightsizer/pkg/recommender"
+	corek8s "github.com/nilx6874/pod-rightsizer/pkg/kubernetes"
+	coreloadtest "github.com/nilx6874/pod-rightsizer/pkg/loadtest"
+	"github.com/nilx6874/pod-rightsizer/pkg/recommender"
 )
 
 type fakeKubernetesClient struct {

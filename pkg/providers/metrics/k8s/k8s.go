@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	corek8s "github.com/HelixThinker/pod-rightsizer/pkg/kubernetes"
-	providermetrics "github.com/HelixThinker/pod-rightsizer/pkg/providers/metrics"
+	corek8s "github.com/nilx6874/pod-rightsizer/pkg/kubernetes"
+	providermetrics "github.com/nilx6874/pod-rightsizer/pkg/providers/metrics"
 )
 
 // Provider implements MetricsProvider using Kubernetes Metrics API.
