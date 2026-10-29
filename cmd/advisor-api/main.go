@@ -10,7 +10,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/HelixThinker/pod-rightsizer/pkg/server"
+	"github.com/nilx6874/pod-rightsizer/pkg/server"
 )
 
 const (

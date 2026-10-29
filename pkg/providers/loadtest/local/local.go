@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	corelt "github.com/HelixThinker/pod-rightsizer/pkg/loadtest"
-	contract "github.com/HelixThinker/pod-rightsizer/pkg/providers/loadtest"
+	corelt "github.com/nilx6874/pod-rightsizer/pkg/loadtest"
+	contract "github.com/nilx6874/pod-rightsizer/pkg/providers/loadtest"
 )
 
 const (

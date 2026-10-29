@@ -7,7 +7,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/HelixThinker/pod-rightsizer/pkg/kubernetes"
+	"github.com/nilx6874/pod-rightsizer/pkg/kubernetes"
 )
 
 // Sample is one resource observation. Timestamp and SourceTimestamp are the

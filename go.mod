@@ -1,4 +1,4 @@
-module github.com/HelixThinker/pod-rightsizer
+module github.com/nilx6874/pod-rightsizer
 
 go 1.26.0
 

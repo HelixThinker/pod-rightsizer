@@ -6,7 +6,7 @@ import (
 	"sort"
 	"time"
 
-	"github.com/HelixThinker/pod-rightsizer/pkg/kubernetes"
+	"github.com/nilx6874/pod-rightsizer/pkg/kubernetes"
 )
 
 // ResourceMetrics is one collected source snapshot. CPUUsage and MemoryUsage

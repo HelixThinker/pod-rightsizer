@@ -7,10 +7,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/HelixThinker/pod-rightsizer/pkg/kubernetes"
-	"github.com/HelixThinker/pod-rightsizer/pkg/loadtest"
-	"github.com/HelixThinker/pod-rightsizer/pkg/metrics"
-	"github.com/HelixThinker/pod-rightsizer/pkg/recommender"
+	"github.com/nilx6874/pod-rightsizer/pkg/kubernetes"
+	"github.com/nilx6874/pod-rightsizer/pkg/loadtest"
+	"github.com/nilx6874/pod-rightsizer/pkg/metrics"
+	"github.com/nilx6874/pod-rightsizer/pkg/recommender"
 )
 
 func TestBuildRecommendationsRejectsRunError(t *testing.T) {

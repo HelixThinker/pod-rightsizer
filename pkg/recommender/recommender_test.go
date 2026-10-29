@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/HelixThinker/pod-rightsizer/pkg/kubernetes"
-	"github.com/HelixThinker/pod-rightsizer/pkg/metrics"
+	"github.com/nilx6874/pod-rightsizer/pkg/kubernetes"
+	"github.com/nilx6874/pod-rightsizer/pkg/metrics"
 )
 
 func TestGenerateRecommendationsUsesCPUPercentileAndMemoryHighWater(t *testing.T) {

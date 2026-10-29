@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	corek8s "github.com/HelixThinker/pod-rightsizer/pkg/kubernetes"
+	corek8s "github.com/nilx6874/pod-rightsizer/pkg/kubernetes"
 )
 
 type failingMetricsClient struct{}

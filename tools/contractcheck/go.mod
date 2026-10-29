@@ -1,4 +1,4 @@
-module github.com/HelixThinker/pod-rightsizer/tools/contractcheck
+module github.com/nilx6874/pod-rightsizer/tools/contractcheck
 
 go 1.26.0
 

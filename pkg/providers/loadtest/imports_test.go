@@ -38,7 +38,7 @@ func assertPackageImports(t *testing.T) {
 
 func forbiddenImport(path string) bool {
 	switch {
-	case path == "github.com/HelixThinker/pod-rightsizer/pkg/loadtest":
+	case path == "github.com/nilx6874/pod-rightsizer/pkg/loadtest":
 		return true
 	case strings.HasSuffix(path, "/providers/loadtest/local"):
 		return true
